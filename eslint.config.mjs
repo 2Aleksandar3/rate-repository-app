@@ -1,6 +1,7 @@
 import { defineConfig } from "eslint/config";
 import react from "eslint-plugin-react";
 import reactNative from "eslint-plugin-react-native";
+import jest from "eslint-plugin-jest";
 import babelParser from "@babel/eslint-parser";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -10,35 +11,39 @@ import { FlatCompat } from "@eslint/eslintrc";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
+  baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended,
+  allConfig: js.configs.all,
 });
 
-export default defineConfig([{
+export default defineConfig([
+  {
     extends: compat.extends("eslint:recommended", "plugin:react/recommended"),
 
     plugins: {
-        react,
-        "react-native": reactNative,
+      react,
+      "react-native": reactNative,
+      jest,
     },
 
     languageOptions: {
-        globals: {
-            ...reactNative.environments["react-native"]["react-native"],
-        },
+      globals: {
+        ...reactNative.environments["react-native"]["react-native"],
+        ...jest.environments.jest.globals,
+      },
 
-        parser: babelParser,
+      parser: babelParser,
     },
 
     settings: {
-        react: {
-            version: "detect",
-        },
+      react: {
+        version: "detect",
+      },
     },
 
     rules: {
-        "react/prop-types": "off",
-        "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off",
+      "react/react-in-jsx-scope": "off",
     },
-}]);
+  },
+]);

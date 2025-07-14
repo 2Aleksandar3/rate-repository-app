@@ -46,6 +46,17 @@ const AppBar = () => {
         <View>
           <AppBarTab to="/">Repositories</AppBarTab>
         </View>
+        {isLoggedIn && (
+          <View>
+            <AppBarTab to="/create-review">Create a review</AppBarTab>
+          </View>
+        )}
+        {isLoggedIn && (
+          <View>
+            <AppBarTab to="/my-reviews">My Reviews</AppBarTab>
+          </View>
+        )}
+
         {isLoggedIn ? (
           <View>
             <AppBarTab onPress={handleSignOut}>Sign Out</AppBarTab>
@@ -53,6 +64,11 @@ const AppBar = () => {
         ) : (
           <View>
             <AppBarTab to="/signin">Sign in</AppBarTab>
+          </View>
+        )}
+        {!isLoggedIn && (
+          <View>
+            <AppBarTab to="/signup">Sign up</AppBarTab>
           </View>
         )}
       </ScrollView>

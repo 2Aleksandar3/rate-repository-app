@@ -1,6 +1,7 @@
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet, Button } from "react-native";
 import theme from "../theme";
 import Text from "./Text";
+import * as Linking from "expo-linking";
 
 const formatCount = (count) => {
   if (count >= 1000) return `${(count / 1000).toFixed(1)}k`;
@@ -46,9 +47,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const RepositoryItem = ({ repository }) => {
+const RepositoryItem = ({ repository, showGitHubButton = false }) => {
+  const openInGitHub = () => {
+    if (repository.url) {
+      Linking.openURL(repository.url);
+    }
+  };
   return (
-    <View style={styles.container}>
+    <View testID="repositoryItem" style={styles.container}>
       <View style={styles.row}>
         <Image
           source={{ uri: repository.ownerAvatarUrl }}
@@ -81,6 +87,11 @@ const RepositoryItem = ({ repository }) => {
           <Text>Reviews</Text>
         </View>
       </View>
+      {showGitHubButton && (
+        <View style={{ marginTop: 15 }}>
+          <Button title="Open in GitHub" onPress={openInGitHub} />
+        </View>
+      )}
     </View>
   );
 };

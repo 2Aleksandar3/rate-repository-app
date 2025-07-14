@@ -5,6 +5,7 @@ import {
   ApolloLink,
 } from "@apollo/client";
 import Constants from "expo-constants";
+import { relayStylePagination } from "@apollo/client/utilities";
 
 const createApolloClient = (authStorage) => {
   const httpLink = new HttpLink({
@@ -27,7 +28,11 @@ const createApolloClient = (authStorage) => {
 
   return new ApolloClient({
     link: authLink.concat(httpLink),
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      typePolicies: {
+        Repository: { fields: { reviews: relayStylePagination() } },
+      },
+    }),
   });
 };
 
